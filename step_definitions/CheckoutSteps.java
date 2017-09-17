@@ -4,20 +4,20 @@ import cucumber.api.java.en.*;
 import cucumber.api.PendingException;
 import implementation.Checkout;
 import static org.junit.Assert.*;
+import java.util.*;
 
 public class CheckoutSteps {
     
-    int bananaPrice;
+    Map<String, Integer> prices = new HashMap<>();
     @Given("^the price of a \"(.*?)\" is (\\d+)c$")
     public void thePriceOfAIsC(String name, int price) throws Throwable {
-        bananaPrice = price;
+        prices.put(name, price);
     }
 
-    Checkout checkout;
+    Checkout checkout = new Checkout();
     @When("^I checkout (\\d+) \"(.*?)\"$")
     public void iCheckout(int itemCount, String name) throws Throwable {
-        checkout = new Checkout();
-        checkout.add(itemCount, bananaPrice);
+        checkout.add(itemCount, prices.get(name));
     }
 
     @Then("^the total price should be (\\d+)c$")
